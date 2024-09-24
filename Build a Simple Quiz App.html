@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .question {
+      margin-bottom: 20px;
+    }
+
+    button {
+      font-size: 16px;
+      padding: 5px 10px;
+      margin: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Quiz App</h1>
+  <div id="quiz-container">
+    <div class="question">
+      <h2 id="question-text"></h2>
+      <div id="answer-options"></div>
+    </div>
+    <button onclick="submitAnswer()">Submit</button>
+  </div>
+  <h2 id="result-text"></h2>
+
+  <script>
+    const questions = [
+      {
+        text: "What is the capital of France?",
+        answers: ["London", "Paris", "Berlin", "Rome"],
+        correctAnswer: 1
+      },
+      {
+        text: "What is the largest ocean on Earth?",
+        answers: ["Atlantic Ocean", "Indian Ocean", "Pacific Ocean", "Arctic Ocean"],
+        correctAnswer: 2
+      },
+      {
+        text: "Who is the current president of the United States?",
+        answers: ["Donald Trump", "Joe Biden", "Barack Obama", "George W. Bush"],
+        correctAnswer: 1
+      }
+    ];
+
+    let currentQuestionIndex = 0;
+    let correctAnswers = 0;
+
+    function displayQuestion() {
+      const currentQuestion = questions[currentQuestionIndex];
+      document.getElementById("question-text").textContent = currentQuestion.text;
+
+      const answerOptionsDiv = document.getElementById("answer-options");
+      answerOptionsDiv.innerHTML = "";
+
+      currentQuestion.answers.forEach((answer, index) => {
+        const button = document.createElement("button");
+        button.textContent = answer;
+        button.onclick = () => selectAnswer(index);
+        answerOptionsDiv.appendChild(button);
+      });
+    }
+
+    function selectAnswer(index) {
+      const currentQuestion = questions[currentQuestionIndex];
+      if (index === currentQuestion.correctAnswer) {
+        correctAnswers++;
+      }
+      currentQuestionIndex++;
+      if (currentQuestionIndex < questions.length) {
+        displayQuestion();
+      } else {
+        displayResult();
+      }
+    }
+
+    function submitAnswer() {
+      selectAnswer(-1);
+    }
+
+    function displayResult() {
+      const resultText = `You scored ${correctAnswers} out of ${questions.length} questions.`;
+      document.getElementById("result-text").textContent = resultText;
+      document.getElementById("quiz-container").style.display = "none";
+    }
+
+    displayQuestion();
+  </script>
+</body>
+</html>
